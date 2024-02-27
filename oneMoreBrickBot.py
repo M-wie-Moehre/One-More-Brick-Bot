@@ -18,7 +18,7 @@ def get_window_position():
 # function to get the position of the ball
 def get_ball_position(window_position):
     # define the screenshot region, because the program only looks on the base line for the ball
-    screenshot_region = window_position[0], window_position[1] + 829, 506, 1
+    screenshot_region = window_position[0], window_position[1] + 829, 506, 1 # <- the line we are checking in is only one pixel high
     # take a screenshot of the given region
     screenshot = pyautogui.screenshot(region=(screenshot_region))
 
@@ -33,22 +33,27 @@ def get_ball_position(window_position):
             return x + 12, 829 # return the ball position (add 12 to the x coordinate to get the center of the ball)
     return None, None
 
+# function to check if the game can be sped up
 def get_if_can_speed_up(window_position):
-    screenshot_region = window_position[0] + 468, window_position[1] + 885, 1, 1
-
+    # define the screenshot region (only one pixel)
+    screenshot_region = window_position[0] + 468, window_position[1] + 885, 1, 1 # <- width and height are 1
+    # take the screenshot
     screenshot = pyautogui.screenshot(region=(screenshot_region))
-
+    # get the color of the pixel
     pixel_color = screenshot.getpixel((0, 0))
-
+    # check if its white
     return pixel_color == (242, 242, 242)
 
+# function to check if the game was sped up, this function is also used to check if all the balls are back down
+# this works because if all balls are back down the "speed up" button disappears
 def get_if_sped_up(window_position):
-    screenshot_region = window_position[0] + 468, window_position[1] + 885, 1, 1
-
+    # define the screenshot region (only one pixel)
+    screenshot_region = window_position[0] + 468, window_position[1] + 885, 1, 1 # <- width and height are 1
+    # take the screenshot
     screenshot = pyautogui.screenshot(region=(screenshot_region))
-
+    # get the color of the pixel
     pixel_color = screenshot.getpixel((0, 0))
-
+    # check if its green
     return pixel_color == (0, 255, 0)
 
 # function to check if the game is over (it does it by checking if one pixel in the region of the continue banner has the right color)
@@ -84,10 +89,13 @@ def main():
         pyautogui.moveTo(pyautogui.moveTo(250 + window_position[0], 470 + window_position[1]))
         pyautogui.click()
     else:
+        # check if the game can be sped up
         if get_if_can_speed_up(window_position):
+            # click on the button
             pyautogui.moveTo(468 + window_position[0], 885 + window_position[1])
             pyautogui.click()
             print("Sped up the game")
+        # check if the speed up symbol is still there. if yes we can be sure that not all balls are back down
         elif get_if_sped_up(window_position):
             print("Waiting for the ball to come down")
         else:
