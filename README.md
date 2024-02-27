@@ -4,7 +4,8 @@ At the moment the bot doesn't make evaluated decision and is only used to farm s
 
 ## Setup
 1. Download Google Play Beta on your PC and install One More Brick.
-2. Open One More Brick and start a game
+2. Install PyAutoGUI if you don't have it yet
+3. Open One More Brick and start a game
 4. Start the bot
 5. Resize the window until the bot is happy
 6. Now the bot will start playing
