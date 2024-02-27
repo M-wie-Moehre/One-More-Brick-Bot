@@ -33,6 +33,24 @@ def get_ball_position(window_position):
             return x + 12, 829 # return the ball position (add 12 to the x coordinate to get the center of the ball)
     return None, None
 
+def get_if_can_speed_up(window_position):
+    screenshot_region = window_position[0] + 468, window_position[1] + 885, 1, 1
+
+    screenshot = pyautogui.screenshot(region=(screenshot_region))
+
+    pixel_color = screenshot.getpixel((0, 0))
+
+    return pixel_color == (242, 242, 242)
+
+def get_if_sped_up(window_position):
+    screenshot_region = window_position[0] + 468, window_position[1] + 885, 1, 1
+
+    screenshot = pyautogui.screenshot(region=(screenshot_region))
+
+    pixel_color = screenshot.getpixel((0, 0))
+
+    return pixel_color == (0, 255, 0)
+
 # function to check if the game is over (it does it by checking if one pixel in the region of the continue banner has the right color)
 def check_game_over(window_position):
     # define the screenshot region
@@ -66,25 +84,32 @@ def main():
         pyautogui.moveTo(pyautogui.moveTo(250 + window_position[0], 470 + window_position[1]))
         pyautogui.click()
     else:
-        # get the ball position
-        ball_x, ball_y = get_ball_position(window_position)
-
-        # check if the ball position was found
-        if ball_x is not None and ball_y is not None:
-            print("Ball at {}, {}".format(ball_x, ball_y))
-            # shoot in the other direction than the ball is in
-            if ball_x < 506 / 2: # if the ball is on the left side
-                # shoot to the right
-                pyautogui.moveTo(486 + window_position[0], ball_y + window_position[1])
-                pyautogui.click()
-                print("Ball shot to the right")
-            else: # if the ball is on the right side
-                # shoot to the left
-                pyautogui.moveTo(20 + window_position[0], ball_y + window_position[1])
-                pyautogui.click()
-                print("Ball shot to the left")
+        if get_if_can_speed_up(window_position):
+            pyautogui.moveTo(468 + window_position[0], 885 + window_position[1])
+            pyautogui.click()
+            print("Sped up the game")
+        elif get_if_sped_up(window_position):
+            print("Waiting for the ball to come down")
         else:
-            print("Waiting till the ball comes down")
+            # get the ball position
+            ball_x, ball_y = get_ball_position(window_position)
+
+            # check if the ball position was found
+            if ball_x is not None and ball_y is not None:
+                print("Ball at {}, {}".format(ball_x, ball_y))
+                # shoot in the other direction than the ball is in
+                if ball_x < 506 / 2: # if the ball is on the left side
+                    # shoot to the right
+                    pyautogui.moveTo(486 + window_position[0], ball_y + window_position[1])
+                    pyautogui.click()
+                    print("Ball shot to the right")
+                else: # if the ball is on the right side
+                    # shoot to the left
+                    pyautogui.moveTo(20 + window_position[0], ball_y + window_position[1])
+                    pyautogui.click()
+                    print("Ball shot to the left")
+            else:
+                print("Waiting for the ball to come down")
 
 if __name__ == "__main__":
     while(True): # repeat forever
