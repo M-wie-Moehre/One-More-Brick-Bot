@@ -127,7 +127,17 @@ def main():
 
 if __name__ == "__main__":
     window_position = get_window_position()
-    print(get_star_count(window_position))
-    #while(True): # repeat forever
-        #main() # call the main function
-        #time.sleep(1) # wait some time -> its not necessary repeat the main function very fast
+
+    start_time = time.time()
+    start_star_count = get_star_count(window_position)
+
+    while(True): # repeat forever
+        main() # call the main function
+        
+        window_position = get_window_position()
+        current_star_count = get_star_count(window_position)
+        current_time = time.time()
+        if current_star_count != '':
+            print("Collecting an average of: ", (int(current_star_count) - int(start_star_count)) / ((current_time - start_time) / 60), " stars per minute")
+
+        time.sleep(1) # wait some time -> its not necessary repeat the main function very fast
