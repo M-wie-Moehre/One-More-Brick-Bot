@@ -1,6 +1,6 @@
 import pyautogui
 import time
-from stats import get_star_count # used to analize how fast you are farming stars
+from stats import get_star_count # used to analyze how fast you are farming stars
 
 # function to get the position of the game window (left, right, top and bottom position)
 def get_window_position():
