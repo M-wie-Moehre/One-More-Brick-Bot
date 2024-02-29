@@ -1,5 +1,6 @@
 import pyautogui
 import time
+from stats import get_star_count # used to analize how fast you are farming stars
 
 # function to get the position of the game window (left, right, top and bottom position)
 def get_window_position():
@@ -72,6 +73,11 @@ def main():
     # get the window position
     window_position = get_window_position()
     
+    # return if there is no window
+    if window_position == None:
+        print("No window found")
+        return
+
     # return if the window has the wrong size
     if window_position[2] - window_position[0] != 506 or window_position[3] - window_position[1] != 929:
         print("The window has the wrong size!")
@@ -120,6 +126,8 @@ def main():
                 print("Waiting for the ball to come down")
 
 if __name__ == "__main__":
-    while(True): # repeat forever
-        main() # call the main function
-        time.sleep(1) # wait some time -> its not necessary repeat the main function very fast
+    window_position = get_window_position()
+    print(get_star_count(window_position))
+    #while(True): # repeat forever
+        #main() # call the main function
+        #time.sleep(1) # wait some time -> its not necessary repeat the main function very fast
